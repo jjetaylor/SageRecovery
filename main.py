@@ -1,5 +1,10 @@
+#Import credentials
+import creds
+
+#Import commands from Discord library
 import discord
 from discord.ext import commands
+
 
 bot = commands.Bot(command_prefix='sr!')
 
@@ -30,4 +35,4 @@ async def cj(ctx):
 async def cat(ctx):
     await ctx.send("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
 
-bot.run('creds.api_token')
+bot.run(creds.api_token)
