@@ -30,4 +30,4 @@ async def cj(ctx):
 async def cat(ctx):
     await ctx.send("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
 
-bot.run('NTk1MjY1MjE5NTE3NzQzMTE1.XRpAtw.1sgSY03oWZORy34Qmogug5Aym3s')
+bot.run('creds.api_token')
