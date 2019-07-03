@@ -2,9 +2,6 @@
 #Importing Libraries, Variables, Modules, ect...
 #################################################
 
-#Import logging capabilities.
-import logging
-
 #Import custom variables from custvar.py file
 import custvar
 
@@ -12,6 +9,8 @@ import custvar
 import discord
 from discord.ext import commands
 
+#Import logging capabilities.
+import logging
 
 
 #################################################
@@ -19,15 +18,13 @@ from discord.ext import commands
 #
 #logging levels: debug, info, warning, error, and critical
 #################################################
-logging.basicConfig(level=logging.INFO, filename='logging.debug', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-#logging.debug('This will get logged to a file')
-
-
+#logging.basicConfig(level=logging.INFO, filename='/var/log/sagerecovery/logging.debug', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 #################################################
 #Where the prefix for the bot it set.
 #################################################
 bot = commands.Bot(command_prefix=custvar.prefix)
+
 #################################################
 #The main functions of the bot
 #################################################
@@ -37,8 +34,6 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    print("Everything's all ready to go~")
-
 
 @bot.event
 async def on_message(message):
@@ -66,4 +61,3 @@ async def cat(ctx):
     await ctx.send("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
 
 bot.run(custvar.api_token)
-logging.error(f'{custvar.api_token} raised an error')
