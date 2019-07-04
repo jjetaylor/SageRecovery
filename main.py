@@ -9,9 +9,11 @@ import custvar
 import discord
 from discord.ext import commands
 
-#Import logging capabilities.
-import logging
+#Import random
+import random
 
+#Import logging capabilities.
+#import logging
 
 #################################################
 #Logging
@@ -23,7 +25,7 @@ import logging
 #################################################
 #Where the prefix for the bot it set.
 #################################################
-bot = commands.Bot(command_prefix=custvar.prefix)
+bot = commands.Bot(command_prefix='sr!')
 
 #################################################
 #The main functions of the bot
@@ -35,18 +37,10 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
-@bot.event
-async def on_message(message):
-    print("The message's content was", message.content)
+#@bot.event
+#async def on_message(message):
+    #print("The message's content was", message.content)
 
-
-@bot.command()
-async def add(ctx, a: int, b: int):
-    await ctx.send(a+b)
-
-@bot.command()
-async def multiply(ctx, a: int, b: int):
-    await ctx.send(a*b)
 
 @bot.command()
 async def greet(ctx):
@@ -56,8 +50,19 @@ async def greet(ctx):
 async def cj(ctx):
     await ctx.send(":smiley: Fuck Kaiwolf! :wink:")
 
-@bot.command()
-async def cat(ctx):
-    await ctx.send("https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif")
+@bot.event
+async def on_message(message):
+     if message.author != bot.user:
+         if 'yeet' in message.content:
+
+             yeetop = [
+                 'YeYEEEET'
+                 'Oh God! :rolling_eyes:',
+                 'Not Again!',
+                 'You call that a Yeet? This is a YEEEEEET!',
+                 'Leroy JENKINS!!'
+                 ]
+             await message.channel.send(random.choice(yeetop))
+     await bot.process_commands(message)
 
 bot.run(custvar.api_token)
