@@ -25,7 +25,7 @@ import random
 #################################################
 #Where the prefix for the bot it set.
 #################################################
-bot = commands.Bot(command_prefix='sr!')
+bot = commands.Bot(command_prefix=custvar.prefix)
 
 #################################################
 #The main functions of the bot
@@ -63,6 +63,15 @@ async def on_message(message):
                  'Leroy JENKINS!!'
                  ]
              await message.channel.send(random.choice(yeetop))
-     await bot.process_commands(message)
 
-bot.run(custvar.api_token)
+#This portion of the on_message is to provide users with helpful information
+#about the bot. If you @ this bot, it will respond with its prefix. 
+     if bot.user.mentioned_in(message) and message.mention_everyone is False:
+        if 'help' in message.content.lower():
+             await message.channel.send(f'My prefix is "{custvar.prefix}". Please try "{custvar.prefix}help" for more information.')
+
+
+
+     await bot.process_commands(message)
+if __name__ == '__main__':
+     bot.run(custvar.api_token)
