@@ -102,11 +102,17 @@ async def userlist(ctx):
         await bot.request_offline_members(ctx.guild.members)
     before = time.time()
     nicknames = [m.display_name for m in ctx.guild.members]
+    user_name = [m.name for m in ctx.guild.members]
+    discrim = [m.discriminator for m in ctx.guild.members]
+    zip(nicknames, user_name, discrim)
+
     tf = tempfile.NamedTemporaryFile(suffix='.csv')
+    #with open(tf.name, mode='w', encoding='utf-8', newline='') as f:
     with open(tf.name, mode='w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, dialect='excel')
-        for v in nicknames:
-            writer.writerow([v])
+        #for v in nicknames:
+            #writer.writerow([v])
+        writer.writerow(zip(nicknames, user_name, discrim))
     after = time.time()
     await ctx.message.author.send(content=(f'Please see the attached user list for your server: {ctx.guild}'), file=discord.File(tf.name))
 
