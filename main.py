@@ -106,6 +106,7 @@ async def es(ctx, user: discord.Member=None):
     '''
     When you need the Recovery Bot to do your dirty work.
     '''
+    await ctx.message.delete()
     await ctx.send(f"Eat Shit {user.mention}")
 
 
