@@ -15,7 +15,7 @@ import tempfile
 #Import commands from Discord library
 import discord
 from discord.ext import commands
-from discord.ext.commands import Bot
+from discord.ext.commands import Bot, has_permissions
 #from discord.ext.commands import Bot
 
 
@@ -65,6 +65,7 @@ async def on_message(message):
                  ]
              await message.channel.send(random.choice(yeetop))
 
+
 #This portion of the on_message is to provide users with helpful information
 #about the bot. If you @ this bot, it will respond with its prefix. 
      if bot.user.mentioned_in(message) and message.mention_everyone is False:
@@ -89,9 +90,30 @@ async def on_message(message):
 async def greet(ctx):
     await ctx.send(":smiley: :wave: Hello, there!")
 
+async def ping(ctx):
+    '''
+    Check bot latency
+    '''
+    latency = bot.latency 
+    await ctx.send(latency)
+
 @bot.command()
 async def cj(ctx):
     await ctx.send(":smiley: Fuck Kaiwolf! :wink:")
+
+@bot.command()
+async def es(ctx, user: discord.Member=None):
+    '''
+    When you need the Recovery Bot to do your dirty work.
+    '''
+    await ctx.send(f"Eat Shit {user.mention}")
+
+
+@bot.command()
+@has_permissions(administrator=True)
+async def clear(ctx, amount=100):
+    #if ctx.message.author.server_permissions.administrator:
+        await ctx.channel.purge(limit=int(amount+1))
 
 #Section used to get user list from server and
 #export to excel spreedsheet
@@ -103,6 +125,7 @@ async def userlist(ctx):
     before = time.time()
     nicknames = [m.display_name for m in ctx.guild.members]
     user_name = [m.name for m in ctx.guild.members]
+    #user: discord.Member=None - gives the whole user and # sine. Might be worth using
     discrim = [m.discriminator for m in ctx.guild.members]
     zip(nicknames, user_name, discrim)
 
