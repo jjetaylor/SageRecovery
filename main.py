@@ -17,6 +17,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Bot, has_permissions
 #from discord.ext.commands import Bot
+from discord.utils import get
 
 
 
@@ -81,6 +82,12 @@ async def on_message(message):
 #command. 
 #----------------------------------------------
 
+
+#Section used to add new users to the temp role
+@bot.event
+async def on_member_join(member):
+    role = discord.utils.get(member.guild.roles, name="temp")
+    await member.add_roles(role)
 
 
 ###############################################
