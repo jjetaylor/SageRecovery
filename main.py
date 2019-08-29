@@ -4,6 +4,7 @@
 
 #Import custom variables from custvar.py file
 import custvar
+import os
 
 #Import other Libraries ect..
 import csv
@@ -157,4 +158,5 @@ async def userlist(ctx):
 
 
 if __name__ == '__main__':
-     bot.run(custvar.api_token)
+     token = os.environ.get("sage_rec_api_token")
+     bot.run(token)
