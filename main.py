@@ -12,6 +12,7 @@ import time
 import random
 import logging
 import tempfile
+import asyncio
 
 #Import commands from Discord library
 import discord
@@ -56,17 +57,37 @@ async def on_ready():
 @bot.event
 async def on_message(message):
      if message.author != bot.user:
-         if 'yeet' in message.content:
+      if 'yeet' in message.content.lower():
+         yeetop = [
+                  'YeYEEEET',
+                  'Oh God! :rolling_eyes:',
+                  'Not Again!',
+                  'You call that a Yeet? This is a YEEEEEET!',
+                  'Leroy JENKINS!!'
+         ]
+         await message.channel.send(random.choice(yeetop))
 
-             yeetop = [
-                 'YeYEEEET'
-                 'Oh God! :rolling_eyes:',
-                 'Not Again!',
-                 'You call that a Yeet? This is a YEEEEEET!',
-                 'Leroy JENKINS!!'
-                 ]
-             await message.channel.send(random.choice(yeetop))
-
+      if message.author != bot.user:
+          waitphraselist = [
+              '1 sec',
+              'hold on',
+              'give me a second',
+              'gimme a sec',
+              'unsec'
+          ]          
+          for waitphrase in list(waitphraselist):
+              if waitphrase in message.content.lower():
+                  await message.channel.send('started timer')
+                          
+                  async def countdown():
+                      await bot.wait_until_ready()
+                      counter = 0
+                      while counter < 60:
+                          counter = counter + 1
+                          print(counter)
+                          await asyncio.sleep(1)
+                      await message.channel.send('Your 1 minute is up!')
+                  bot.loop.create_task(countdown())
 
 #This portion of the on_message is to provide users with helpful information
 #about the bot. If you @ this bot, it will respond with its prefix. 
