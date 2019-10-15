@@ -7,12 +7,12 @@ import custvar
 import os
 
 #Import other Libraries ect..
-import csv
-import time
 import random
-import logging
-import tempfile
+import time
 import asyncio
+import datetime
+from datetime import timedelta
+
 
 #Import commands from Discord library
 import discord
@@ -24,18 +24,29 @@ from discord.utils import get
 
 
 #################################################
-#Logging
-#logging levels: debug, info, warning, error, and critical
+#Cogs
 #################################################
-#logging.basicConfig(level=logging.INFO, filename='/var/log/sagerecovery/logging.debug', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
+initial_extensions = ['cogs.simple',
+                      #'cogs.logging',
+                      #'cogs.database',
+                      'cogs.backup',
+                      'cogs.moderation',
+                      'cogs.timezone'
+                      ]
 
 
 #################################################
-#Where the prefix for the bot it set.
+#Bot Prefix
 #################################################
 bot = commands.Bot(command_prefix=custvar.prefix)
 
+
+#################################################
+#Loading Cogs
+#################################################
+if __name__ == '__main__':
+    for extension in initial_extensions:
+        bot.load_extension(extension)
 
 
 #################################################
@@ -56,22 +67,26 @@ async def on_ready():
 #################################################
 @bot.event
 async def on_message(message):
-     if message.author != bot.user:
-      if 'yeet' in message.content.lower():
-         yeetop = [
+      if message.author != bot.user:
+          if 'yeet' in message.content.lower():
+              yeetop = [
                   'YeYEEEET',
                   'Oh God! :rolling_eyes:',
                   'Not Again!',
                   'You call that a Yeet? This is a YEEEEEET!',
                   'Leroy JENKINS!!'
-         ]
-         await message.channel.send(random.choice(yeetop))
+                  ]
+              await message.channel.send(random.choice(yeetop))
 
       if message.author != bot.user:
           waitphraselist = [
               '1 sec',
               'hold on',
               'give me a second',
+              'give me a sec',
+              'just a sec',
+              'one moment',
+              '1 moment',
               'gimme a sec',
               'unsec'
           ]          
@@ -82,22 +97,24 @@ async def on_message(message):
                   async def countdown():
                       await bot.wait_until_ready()
                       counter = 0
-                      while counter < 60:
+                      while counter < 2:
                           counter = counter + 1
                           print(counter)
                           await asyncio.sleep(1)
-                      await message.channel.send('Your 1 minute is up!')
+                      await message.channel.send('{0.author.mention}: Your 1 minute is up!')
                   bot.loop.create_task(countdown())
+                        
+
 
 #This portion of the on_message is to provide users with helpful information
 #about the bot. If you @ this bot, it will respond with its prefix. 
-     if bot.user.mentioned_in(message) and message.mention_everyone is False:
-        if 'help' in message.content.lower():
-             await message.channel.send(f'My prefix is "{custvar.prefix}". Please try "{custvar.prefix}help" for more information.')
+      if bot.user.mentioned_in(message) and message.mention_everyone is False:
+          if 'help' in message.content.lower():
+              await message.channel.send(f'My prefix is "{custvar.prefix}". Please try "{custvar.prefix}help" for more information.')
 
 
 
-     await bot.process_commands(message)
+      await bot.process_commands(message)
 #----------------------------------------------
 #end On message section. Do not put any 
 #on_message code below await bot.process 
@@ -105,79 +122,27 @@ async def on_message(message):
 #----------------------------------------------
 
 
-#Section used to add new users to the temp role
-@bot.event
-async def on_member_join(member):
-    role = discord.utils.get(member.guild.roles, name="temp")
-    await member.add_roles(role)
-
-
 ###############################################
 #Begin Bot commands section.
 ###############################################
 @bot.command()
-async def greet(ctx):
-    await ctx.send(":smiley: :wave: Hello, there!")
-
-async def ping(ctx):
-    '''
-    Check bot latency
-    '''
-    latency = bot.latency 
-    await ctx.send(latency)
-
-@bot.command()
-async def cj(ctx):
-    await ctx.send(":smiley: Fuck Kaiwolf! :wink:")
-
-@bot.command()
-async def es(ctx, user: discord.Member=None):
-    '''
-    When you need the Recovery Bot to do your dirty work.
-    '''
-    await ctx.message.delete()
-    await ctx.send(f"Eat Shit {user.mention}")
-
-
-@bot.command()
-@has_permissions(administrator=True)
-async def clear(ctx, amount=100):
-    #if ctx.message.author.server_permissions.administrator:
-        await ctx.channel.purge(limit=int(amount+1))
-
-#Section used to get user list from server and
-#export to excel spreedsheet
-@bot.command(pass_context=True)
-async def userlist(ctx):
-    """Returns a CSV file of all users on the server."""
-    if ctx.guild.large == 'true':
-        await bot.request_offline_members(ctx.guild.members)
-    before = time.time()
-    nicknames = [m.display_name for m in ctx.guild.members]
-    user_name = [m.name for m in ctx.guild.members]
-    #user: discord.Member=None - gives the whole user and # sine. Might be worth using
-    discrim = [m.discriminator for m in ctx.guild.members]
-    zip(nicknames, user_name, discrim)
-
-    tf = tempfile.NamedTemporaryFile(suffix='.csv')
-    #with open(tf.name, mode='w', encoding='utf-8', newline='') as f:
-    with open(tf.name, mode='w', encoding='utf-8', newline='') as f:
-        writer = csv.writer(f, dialect='excel')
-        #for v in nicknames:
-            #writer.writerow([v])
-        writer.writerow(zip(nicknames, user_name, discrim))
-    after = time.time()
-    await ctx.message.author.send(content=(f'Please see the attached user list for your server: {ctx.guild}'), file=discord.File(tf.name))
-
+async def shadowkeep(ctx):
+    format = "%a %b %d %H:%M:%S %Y"
+    skdt = datetime.datetime(2019, 10, 1)
+    await ctx.send(f'ShadowKeep Release Date is: {skdt}')
+    # This gives timedelta in days
+    #dt(year=2011,month=05,day=05) - dt(year=now.year, month=now.month, day=now.day)
+    # This gives timedelta in days & seconds
+    #dt(year=2019,month=10,day=01) - dt(year=now.year, month=now.month, day=now.day, minute=now.minute))
+    
+    skcd = (skdt - datetime.datetime.now())
+    await ctx.send(f'There are {skcd.strftime("%b-%d, %Y")} days until release')
 
 
 #----------------------------------------------
 #end Bot commands  section.
 #----------------------------------------------
 
-
-
-
-if __name__ == '__main__':
-     token = os.environ.get("sage_rec_api_token")
-     bot.run(token)
+#if __name__ == '__main__':
+token = os.environ.get("sage_rec_api_token")
+bot.run(token)
