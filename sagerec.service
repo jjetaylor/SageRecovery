@@ -1,0 +1,15 @@
+[Unit]
+Description=SageRecovery Bot Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=jjet
+EnvironmentFile=/etc/profile.d/sagerec.sh
+ExecStart=/usr/bin/env python3.6 /home/jjet/sagerecovery/main.py
+
+[Install]
+WantedBy=multi-user.target

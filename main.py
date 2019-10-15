@@ -145,4 +145,5 @@ async def shadowkeep(ctx):
 
 #if __name__ == '__main__':
 token = os.environ.get("sage_rec_api_token")
+#print(token)
 bot.run(token)
