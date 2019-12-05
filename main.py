@@ -29,6 +29,7 @@ from discord.utils import get
 initial_extensions = ['cogs.simple',
                       #'cogs.logging',
                       #'cogs.database',
+                      'cogs.announcement',
                       'cogs.backup',
                       'cogs.moderation',
                       'cogs.timezone'
